@@ -1,21 +1,48 @@
 import React, { useState } from 'react';
-import { Recipe } from '../types/recipe';
-import { Heart, Clock, UtensilsCrossed, ChefHat, Instagram, Globe, Sparkles } from 'lucide-react';
+import { Recipe, Cookbook } from '../types/recipe';
+import {
+  Heart,
+  Clock,
+  UtensilsCrossed,
+  ChefHat,
+  Instagram,
+  Globe,
+  Sparkles,
+  MoreVertical,
+  Trash2,
+  FolderMinus,
+  FolderPlus,
+  CalendarPlus,
+  ShoppingBag,
+} from 'lucide-react';
 
 interface RecipeCardProps {
   recipe: Recipe;
+  activeCookbookId?: string | null;
+  activeCookbookTitle?: string;
   onSelect: (recipe: Recipe) => void;
   onToggleFavorite: (id: string, e: React.MouseEvent) => void;
   onQuickStartCook?: (recipe: Recipe, e: React.MouseEvent) => void;
+  onDeleteRecipe?: (id: string) => void;
+  onRemoveFromCookbook?: (recipeId: string, cookbookId: string) => void;
+  onManageCookbooks?: (recipe: Recipe) => void;
 }
 
 export const RecipeCard: React.FC<RecipeCardProps> = ({
   recipe,
+  activeCookbookId,
+  activeCookbookTitle,
   onSelect,
   onToggleFavorite,
   onQuickStartCook,
+  onDeleteRecipe,
+  onRemoveFromCookbook,
+  onManageCookbooks,
 }) => {
   const [imageError, setImageError] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+
   const totalMinutes = recipe.prepMinutes + recipe.cookMinutes;
 
   const renderSourceIcon = () => {
@@ -33,10 +60,27 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
     }
   };
 
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onDeleteRecipe) {
+      onDeleteRecipe(recipe.id);
+    }
+    setShowConfirmDelete(false);
+    setShowMenu(false);
+  };
+
+  const handleRemoveFromThisCookbook = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onRemoveFromCookbook && activeCookbookId) {
+      onRemoveFromCookbook(recipe.id, activeCookbookId);
+    }
+    setShowMenu(false);
+  };
+
   return (
     <div
       onClick={() => onSelect(recipe)}
-      className="group cursor-pointer rounded-2xl bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 hover:border-orange-200 dark:hover:border-stone-700 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col"
+      className="group relative cursor-pointer rounded-2xl bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 hover:border-orange-200 dark:hover:border-stone-700 overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col select-none"
     >
       {/* Recipe Photo with scrim & favorite button */}
       <div className="relative aspect-[4/3] w-full bg-stone-100 dark:bg-stone-800 overflow-hidden">
@@ -57,18 +101,82 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
           </div>
         )}
 
-        {/* Favorite Heart Button */}
-        <button
-          onClick={(e) => onToggleFavorite(recipe.id, e)}
-          aria-label={recipe.isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-          className="absolute top-3 right-3 p-2 rounded-full bg-white/90 dark:bg-stone-900/90 backdrop-blur-sm text-stone-700 dark:text-stone-200 hover:text-red-500 dark:hover:text-red-400 transition-colors shadow-sm focus:outline-none"
-        >
-          <Heart
-            className={`w-4 h-4 transition-transform ${
-              recipe.isFavorite ? 'fill-red-500 text-red-500 scale-110' : ''
-            }`}
-          />
-        </button>
+        {/* Top-Right Action Row: Favorite & 3-Dots Menu */}
+        <div className="absolute top-2.5 right-2.5 flex items-center gap-1.5 z-10">
+          <button
+            onClick={(e) => onToggleFavorite(recipe.id, e)}
+            aria-label={recipe.isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+            className="p-2 rounded-full bg-white/90 dark:bg-stone-900/90 backdrop-blur-sm text-stone-700 dark:text-stone-200 hover:text-red-500 dark:hover:text-red-400 transition-colors shadow-xs focus:outline-none"
+          >
+            <Heart
+              className={`w-3.5 h-3.5 transition-transform ${
+                recipe.isFavorite ? 'fill-red-500 text-red-500 scale-110' : ''
+              }`}
+            />
+          </button>
+
+          {/* 3-Dots Menu Trigger */}
+          <div className="relative">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowMenu(!showMenu);
+              }}
+              aria-label="Recipe actions"
+              className="p-2 rounded-full bg-white/90 dark:bg-stone-900/90 backdrop-blur-sm text-stone-700 dark:text-stone-200 hover:text-stone-900 dark:hover:text-white transition-colors shadow-xs focus:outline-none"
+            >
+              <MoreVertical className="w-3.5 h-3.5" />
+            </button>
+
+            {/* Dropdown Menu */}
+            {showMenu && (
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="absolute right-0 top-9 w-52 bg-white dark:bg-stone-800 rounded-2xl shadow-xl border border-stone-200 dark:border-stone-700 py-1.5 z-30 text-xs animate-in fade-in duration-150"
+              >
+                {activeCookbookId && onRemoveFromCookbook && (
+                  <button
+                    onClick={handleRemoveFromThisCookbook}
+                    className="w-full px-3.5 py-2 text-left text-stone-700 dark:text-stone-200 hover:bg-orange-50 dark:hover:bg-orange-950/40 flex items-center gap-2 transition-colors"
+                  >
+                    <FolderMinus className="w-3.5 h-3.5 text-orange-600" />
+                    <span className="truncate">
+                      Remove from {activeCookbookTitle || 'cookbook'}
+                    </span>
+                  </button>
+                )}
+
+                {onManageCookbooks && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowMenu(false);
+                      onManageCookbooks(recipe);
+                    }}
+                    className="w-full px-3.5 py-2 text-left text-stone-700 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-700 flex items-center gap-2 transition-colors"
+                  >
+                    <FolderPlus className="w-3.5 h-3.5 text-stone-500" />
+                    <span>Manage Cookbooks...</span>
+                  </button>
+                )}
+
+                <div className="h-px bg-stone-100 dark:bg-stone-700 my-1" />
+
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowConfirmDelete(true);
+                    setShowMenu(false);
+                  }}
+                  className="w-full px-3.5 py-2 text-left text-red-600 hover:bg-red-50 dark:hover:bg-red-950/40 flex items-center gap-2 transition-colors"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span>Delete Recipe</span>
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
 
         {/* Floating Cook Time Scrim */}
         <div className="absolute bottom-2 left-2 px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md text-white text-xs font-medium flex items-center gap-1.5">
@@ -121,6 +229,39 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
           )}
         </div>
       </div>
+
+      {/* In-App Confirmation Popover for Deletion (No window.confirm!) */}
+      {showConfirmDelete && (
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="absolute inset-0 z-40 bg-stone-950/85 backdrop-blur-xs p-4 flex flex-col items-center justify-center text-center text-white animate-in fade-in duration-150"
+        >
+          <div className="w-10 h-10 rounded-full bg-red-950/80 text-red-400 flex items-center justify-center mb-2">
+            <Trash2 className="w-5 h-5" />
+          </div>
+          <p className="text-xs font-semibold mb-1">Delete this recipe?</p>
+          <p className="text-[11px] text-stone-300 mb-3 px-2">
+            This will remove "{recipe.title}" from all cookbooks.
+          </p>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowConfirmDelete(false);
+              }}
+              className="px-3 py-1.5 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-medium"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleDelete}
+              className="px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-semibold shadow-xs"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

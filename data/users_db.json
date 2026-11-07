@@ -1,0 +1,600 @@
+{
+  "bktaylor": {
+    "id": "usr-bktaylor",
+    "userId": "bktaylor",
+    "name": "Brian Taylor",
+    "avatarUrl": "https://api.dicebear.com/7.x/notionists/svg?seed=bktaylor",
+    "bio": "Home chef loving weeknight quick pasta & high-protein seafood.",
+    "salt": "44198975bedc3f24f152b1f7d120b904",
+    "passwordHash": "23bcd244cdbbbd7de715b038487598331506d5e1996fc7a31895304b9aced250dd76e9cd72b6677c63177239af5230b069abf78a9535565802b2050d25b2bee6",
+    "createdAt": "2026-11-01T00:00:00Z",
+    "data": {
+      "recipes": [
+        {
+          "id": "recipe-tuscan-salmon",
+          "title": "Crispy Skin Creamy Tuscan Salmon",
+          "description": "Pan-seared Atlantic salmon fillets with shatteringly crisp skin, simmered in a velvety garlic, sun-dried tomato, and baby spinach cream sauce.",
+          "author": "Carolina Gelen",
+          "sourceUrl": "https://instagram.com/reel/C8x9123TuscanSalmon",
+          "sourcePlatform": "instagram",
+          "imageUrl": "/src/assets/images/creamy_tuscan_salmon_1794058991512.jpg",
+          "servings": 2,
+          "prepMinutes": 10,
+          "cookMinutes": 18,
+          "difficulty": "Easy",
+          "cuisine": "Italian",
+          "calories": 520,
+          "proteinGrams": 42,
+          "tags": [
+            "High-Protein",
+            "Keto",
+            "Under 30 Min",
+            "Gluten-Free",
+            "Date Night"
+          ],
+          "cookbookIds": [
+            "weeknight-20",
+            "instagram-saves",
+            "high-protein"
+          ],
+          "isFavorite": true,
+          "rating": 4.9,
+          "createdAt": "2026-11-01T12:00:00Z",
+          "notes": "Ensure the salmon skin is completely patted bone-dry with paper towels before placing in the hot skillet.",
+          "ingredients": [
+            {
+              "id": "ing-1",
+              "item": "Salmon fillets (skin-on)",
+              "quantity": 2,
+              "unit": "fillets",
+              "category": "Meat & Seafood",
+              "originalText": "2 wild-caught salmon fillets (approx. 180g each, skin-on)"
+            },
+            {
+              "id": "ing-2",
+              "item": "Olive oil",
+              "quantity": 2,
+              "unit": "tbsp",
+              "category": "Pantry",
+              "originalText": "2 tbsp extra virgin olive oil"
+            },
+            {
+              "id": "ing-3",
+              "item": "Garlic cloves",
+              "quantity": 4,
+              "unit": "cloves",
+              "category": "Produce",
+              "originalText": "4 garlic cloves, thinly sliced"
+            },
+            {
+              "id": "ing-4",
+              "item": "Sun-dried tomatoes in oil",
+              "quantity": 0.5,
+              "unit": "cups",
+              "category": "Pantry",
+              "originalText": "½ cup sun-dried tomatoes, drained and sliced"
+            },
+            {
+              "id": "ing-5",
+              "item": "Heavy whipping cream",
+              "quantity": 0.75,
+              "unit": "cups",
+              "category": "Dairy & Eggs",
+              "originalText": "¾ cup heavy whipping cream"
+            },
+            {
+              "id": "ing-6",
+              "item": "Baby spinach",
+              "quantity": 3,
+              "unit": "cups",
+              "category": "Produce",
+              "originalText": "3 cups fresh baby spinach leaves"
+            }
+          ],
+          "instructions": [
+            {
+              "step": 1,
+              "instruction": "Pat salmon fillets dry with paper towels and season with kosher salt and cracked black pepper."
+            },
+            {
+              "step": 2,
+              "instruction": "Sear salmon skin-side down in a hot skillet for 5 minutes until crispy and golden.",
+              "timerMinutes": 5
+            },
+            {
+              "step": 3,
+              "instruction": "Flip and cook for 2 minutes, then remove to plate.",
+              "timerMinutes": 2
+            },
+            {
+              "step": 4,
+              "instruction": "Simmer cream, garlic, sun-dried tomatoes, and spinach until velvety. Nestle salmon back in and serve.",
+              "timerMinutes": 3
+            }
+          ]
+        },
+        {
+          "id": "recipe-chili-noodles",
+          "title": "10-Minute Spicy Scallion Chili Crisp Noodles",
+          "description": "Springy artisanal wheat noodles tossed in a sizzling garlic, scallion, and Sichuan chili crisp oil with toasted sesame seeds and a jammy egg.",
+          "author": "Chef Jon Kung",
+          "sourceUrl": "https://tiktok.com/@jonkung/video/739182390192",
+          "sourcePlatform": "tiktok",
+          "imageUrl": "/src/assets/images/crispy_chili_noodles_1794058994201.jpg",
+          "servings": 1,
+          "prepMinutes": 5,
+          "cookMinutes": 5,
+          "difficulty": "Easy",
+          "cuisine": "Chinese",
+          "calories": 460,
+          "proteinGrams": 16,
+          "tags": [
+            "Quick",
+            "Vegetarian",
+            "Under 15 Min",
+            "Late Night",
+            "Comfort Food"
+          ],
+          "cookbookIds": [
+            "weeknight-20",
+            "instagram-saves"
+          ],
+          "isFavorite": true,
+          "rating": 4.8,
+          "createdAt": "2026-11-03T18:30:00Z",
+          "ingredients": [
+            {
+              "id": "ing-cn-1",
+              "item": "Handmade fresh wheat or ramen noodles",
+              "quantity": 150,
+              "unit": "g",
+              "category": "Pantry",
+              "originalText": "150g fresh knife-cut or ramen wheat noodles"
+            },
+            {
+              "id": "ing-cn-2",
+              "item": "Chili crisp oil",
+              "quantity": 2,
+              "unit": "tbsp",
+              "category": "Pantry",
+              "originalText": "2 tbsp Sichuan chili crisp oil with crunchy bits"
+            },
+            {
+              "id": "ing-cn-3",
+              "item": "Scallions (green onions)",
+              "quantity": 3,
+              "unit": "stalks",
+              "category": "Produce",
+              "originalText": "3 scallions, finely sliced"
+            }
+          ],
+          "instructions": [
+            {
+              "step": 1,
+              "instruction": "Boil noodles for 3-4 minutes until al dente.",
+              "timerMinutes": 4
+            },
+            {
+              "step": 2,
+              "instruction": "Pour hot oil over garlic, scallions, and chili crisp."
+            },
+            {
+              "step": 3,
+              "instruction": "Toss noodles until glossy and top with soft-boiled egg."
+            }
+          ]
+        }
+      ],
+      "cookbooks": [
+        {
+          "id": "weeknight-20",
+          "title": "Weeknight 20-Min Dinners",
+          "description": "Fast, foolproof, and low-mess meals for busy evenings.",
+          "recipeCount": 2,
+          "isCustom": false
+        },
+        {
+          "id": "instagram-saves",
+          "title": "Saved from Instagram",
+          "description": "Viral reels and chef creations saved directly to ReciMe.",
+          "recipeCount": 3,
+          "isCustom": false
+        },
+        {
+          "id": "high-protein",
+          "title": "High Protein Staples",
+          "description": "35g+ protein per serving to fuel active recovery.",
+          "recipeCount": 2,
+          "isCustom": false
+        },
+        {
+          "id": "sweet-treats",
+          "title": "Sunday Baking & Sweets",
+          "description": "Elevated desserts and afternoon bakes.",
+          "recipeCount": 1,
+          "isCustom": false
+        }
+      ],
+      "mealPlan": [],
+      "groceryItems": [
+        {
+          "id": "groc-1",
+          "recipeId": "recipe-tuscan-salmon",
+          "recipeTitle": "Crispy Skin Creamy Tuscan Salmon",
+          "name": "Salmon fillets (skin-on)",
+          "quantity": 2,
+          "unit": "fillets",
+          "category": "Meat & Seafood",
+          "checked": false,
+          "addedAt": "2026-11-06T10:00:00Z"
+        },
+        {
+          "id": "groc-2",
+          "recipeId": "recipe-tuscan-salmon",
+          "recipeTitle": "Crispy Skin Creamy Tuscan Salmon",
+          "name": "Baby spinach",
+          "quantity": 3,
+          "unit": "cups",
+          "category": "Produce",
+          "checked": false,
+          "addedAt": "2026-11-06T10:00:00Z"
+        }
+      ]
+    }
+  },
+  "chef_elena": {
+    "id": "usr-chef_elena",
+    "userId": "chef_elena",
+    "name": "Elena Rostova",
+    "avatarUrl": "https://api.dicebear.com/7.x/notionists/svg?seed=Elena",
+    "bio": "Pastry chef & Sunday baker. Exploring artisanal Italian desserts.",
+    "salt": "4654b171479ad71ba32a79ad50879d4a",
+    "passwordHash": "8f9a65b8ce40da97d9b5372378fb822c0860cb620eae583942873afc2aae79c218d5c0410b6995a904cefb58ff0a2f16bd26401a52663cf7c097bd65d55f7ae6",
+    "createdAt": "2026-11-02T00:00:00Z",
+    "data": {
+      "recipes": [
+        {
+          "id": "recipe-tuscan-salmon",
+          "title": "Crispy Skin Creamy Tuscan Salmon",
+          "description": "Pan-seared Atlantic salmon fillets with shatteringly crisp skin, simmered in a velvety garlic, sun-dried tomato, and baby spinach cream sauce.",
+          "author": "Carolina Gelen",
+          "sourceUrl": "https://instagram.com/reel/C8x9123TuscanSalmon",
+          "sourcePlatform": "instagram",
+          "imageUrl": "/src/assets/images/creamy_tuscan_salmon_1794058991512.jpg",
+          "servings": 2,
+          "prepMinutes": 10,
+          "cookMinutes": 18,
+          "difficulty": "Easy",
+          "cuisine": "Italian",
+          "calories": 520,
+          "proteinGrams": 42,
+          "tags": [
+            "High-Protein",
+            "Keto",
+            "Under 30 Min",
+            "Gluten-Free",
+            "Date Night"
+          ],
+          "cookbookIds": [
+            "weeknight-20",
+            "instagram-saves",
+            "high-protein"
+          ],
+          "isFavorite": true,
+          "rating": 4.9,
+          "createdAt": "2026-11-01T12:00:00Z",
+          "notes": "Ensure the salmon skin is completely patted bone-dry with paper towels before placing in the hot skillet.",
+          "ingredients": [
+            {
+              "id": "ing-1",
+              "item": "Salmon fillets (skin-on)",
+              "quantity": 2,
+              "unit": "fillets",
+              "category": "Meat & Seafood",
+              "originalText": "2 wild-caught salmon fillets (approx. 180g each, skin-on)"
+            },
+            {
+              "id": "ing-2",
+              "item": "Olive oil",
+              "quantity": 2,
+              "unit": "tbsp",
+              "category": "Pantry",
+              "originalText": "2 tbsp extra virgin olive oil"
+            },
+            {
+              "id": "ing-3",
+              "item": "Garlic cloves",
+              "quantity": 4,
+              "unit": "cloves",
+              "category": "Produce",
+              "originalText": "4 garlic cloves, thinly sliced"
+            },
+            {
+              "id": "ing-4",
+              "item": "Sun-dried tomatoes in oil",
+              "quantity": 0.5,
+              "unit": "cups",
+              "category": "Pantry",
+              "originalText": "½ cup sun-dried tomatoes, drained and sliced"
+            },
+            {
+              "id": "ing-5",
+              "item": "Heavy whipping cream",
+              "quantity": 0.75,
+              "unit": "cups",
+              "category": "Dairy & Eggs",
+              "originalText": "¾ cup heavy whipping cream"
+            },
+            {
+              "id": "ing-6",
+              "item": "Baby spinach",
+              "quantity": 3,
+              "unit": "cups",
+              "category": "Produce",
+              "originalText": "3 cups fresh baby spinach leaves"
+            }
+          ],
+          "instructions": [
+            {
+              "step": 1,
+              "instruction": "Pat salmon fillets dry with paper towels and season with kosher salt and cracked black pepper."
+            },
+            {
+              "step": 2,
+              "instruction": "Sear salmon skin-side down in a hot skillet for 5 minutes until crispy and golden.",
+              "timerMinutes": 5
+            },
+            {
+              "step": 3,
+              "instruction": "Flip and cook for 2 minutes, then remove to plate.",
+              "timerMinutes": 2
+            },
+            {
+              "step": 4,
+              "instruction": "Simmer cream, garlic, sun-dried tomatoes, and spinach until velvety. Nestle salmon back in and serve.",
+              "timerMinutes": 3
+            }
+          ]
+        }
+      ],
+      "cookbooks": [
+        {
+          "id": "weeknight-20",
+          "title": "Weeknight 20-Min Dinners",
+          "description": "Fast, foolproof, and low-mess meals for busy evenings.",
+          "recipeCount": 2,
+          "isCustom": false
+        },
+        {
+          "id": "sweet-treats",
+          "title": "Sunday Baking & Sweets",
+          "description": "Elevated desserts and afternoon bakes.",
+          "recipeCount": 1,
+          "isCustom": false
+        }
+      ],
+      "mealPlan": [],
+      "groceryItems": []
+    }
+  },
+  "testchef": {
+    "id": "usr-1794061540128",
+    "userId": "testchef",
+    "name": "Test Chef",
+    "avatarUrl": "https://api.dicebear.com/7.x/notionists/svg?seed=testchef",
+    "bio": "Testing registration",
+    "salt": "ece352e0e526c8c6c9cb245682cbb9f1",
+    "passwordHash": "f0473d4876c6e0d564be2aa6744fe6c6ce2a78401c7a8cc82d8edd4422b55b2425a6c1a27b9e592295a7a666574715060bacc79e53f1099c71a612421004eaca",
+    "createdAt": "2026-11-07T14:25:40.128Z",
+    "data": {
+      "recipes": [
+        {
+          "id": "recipe-tuscan-salmon",
+          "title": "Crispy Skin Creamy Tuscan Salmon",
+          "description": "Pan-seared Atlantic salmon fillets with shatteringly crisp skin, simmered in a velvety garlic, sun-dried tomato, and baby spinach cream sauce.",
+          "author": "Carolina Gelen",
+          "sourceUrl": "https://instagram.com/reel/C8x9123TuscanSalmon",
+          "sourcePlatform": "instagram",
+          "imageUrl": "/src/assets/images/creamy_tuscan_salmon_1794058991512.jpg",
+          "servings": 2,
+          "prepMinutes": 10,
+          "cookMinutes": 18,
+          "difficulty": "Easy",
+          "cuisine": "Italian",
+          "calories": 520,
+          "proteinGrams": 42,
+          "tags": [
+            "High-Protein",
+            "Keto",
+            "Under 30 Min",
+            "Gluten-Free",
+            "Date Night"
+          ],
+          "cookbookIds": [
+            "weeknight-20",
+            "instagram-saves",
+            "high-protein"
+          ],
+          "isFavorite": true,
+          "rating": 4.9,
+          "createdAt": "2026-11-01T12:00:00Z",
+          "notes": "Ensure the salmon skin is completely patted bone-dry with paper towels before placing in the hot skillet.",
+          "ingredients": [
+            {
+              "id": "ing-1",
+              "item": "Salmon fillets (skin-on)",
+              "quantity": 2,
+              "unit": "fillets",
+              "category": "Meat & Seafood",
+              "originalText": "2 wild-caught salmon fillets (approx. 180g each, skin-on)"
+            },
+            {
+              "id": "ing-2",
+              "item": "Olive oil",
+              "quantity": 2,
+              "unit": "tbsp",
+              "category": "Pantry",
+              "originalText": "2 tbsp extra virgin olive oil"
+            },
+            {
+              "id": "ing-3",
+              "item": "Garlic cloves",
+              "quantity": 4,
+              "unit": "cloves",
+              "category": "Produce",
+              "originalText": "4 garlic cloves, thinly sliced"
+            },
+            {
+              "id": "ing-4",
+              "item": "Sun-dried tomatoes in oil",
+              "quantity": 0.5,
+              "unit": "cups",
+              "category": "Pantry",
+              "originalText": "½ cup sun-dried tomatoes, drained and sliced"
+            },
+            {
+              "id": "ing-5",
+              "item": "Heavy whipping cream",
+              "quantity": 0.75,
+              "unit": "cups",
+              "category": "Dairy & Eggs",
+              "originalText": "¾ cup heavy whipping cream"
+            },
+            {
+              "id": "ing-6",
+              "item": "Baby spinach",
+              "quantity": 3,
+              "unit": "cups",
+              "category": "Produce",
+              "originalText": "3 cups fresh baby spinach leaves"
+            }
+          ],
+          "instructions": [
+            {
+              "step": 1,
+              "instruction": "Pat salmon fillets dry with paper towels and season with kosher salt and cracked black pepper."
+            },
+            {
+              "step": 2,
+              "instruction": "Sear salmon skin-side down in a hot skillet for 5 minutes until crispy and golden.",
+              "timerMinutes": 5
+            },
+            {
+              "step": 3,
+              "instruction": "Flip and cook for 2 minutes, then remove to plate.",
+              "timerMinutes": 2
+            },
+            {
+              "step": 4,
+              "instruction": "Simmer cream, garlic, sun-dried tomatoes, and spinach until velvety. Nestle salmon back in and serve.",
+              "timerMinutes": 3
+            }
+          ]
+        },
+        {
+          "id": "recipe-chili-noodles",
+          "title": "10-Minute Spicy Scallion Chili Crisp Noodles",
+          "description": "Springy artisanal wheat noodles tossed in a sizzling garlic, scallion, and Sichuan chili crisp oil with toasted sesame seeds and a jammy egg.",
+          "author": "Chef Jon Kung",
+          "sourceUrl": "https://tiktok.com/@jonkung/video/739182390192",
+          "sourcePlatform": "tiktok",
+          "imageUrl": "/src/assets/images/crispy_chili_noodles_1794058994201.jpg",
+          "servings": 1,
+          "prepMinutes": 5,
+          "cookMinutes": 5,
+          "difficulty": "Easy",
+          "cuisine": "Chinese",
+          "calories": 460,
+          "proteinGrams": 16,
+          "tags": [
+            "Quick",
+            "Vegetarian",
+            "Under 15 Min",
+            "Late Night",
+            "Comfort Food"
+          ],
+          "cookbookIds": [
+            "weeknight-20",
+            "instagram-saves"
+          ],
+          "isFavorite": true,
+          "rating": 4.8,
+          "createdAt": "2026-11-03T18:30:00Z",
+          "ingredients": [
+            {
+              "id": "ing-cn-1",
+              "item": "Handmade fresh wheat or ramen noodles",
+              "quantity": 150,
+              "unit": "g",
+              "category": "Pantry",
+              "originalText": "150g fresh knife-cut or ramen wheat noodles"
+            },
+            {
+              "id": "ing-cn-2",
+              "item": "Chili crisp oil",
+              "quantity": 2,
+              "unit": "tbsp",
+              "category": "Pantry",
+              "originalText": "2 tbsp Sichuan chili crisp oil with crunchy bits"
+            },
+            {
+              "id": "ing-cn-3",
+              "item": "Scallions (green onions)",
+              "quantity": 3,
+              "unit": "stalks",
+              "category": "Produce",
+              "originalText": "3 scallions, finely sliced"
+            }
+          ],
+          "instructions": [
+            {
+              "step": 1,
+              "instruction": "Boil noodles for 3-4 minutes until al dente.",
+              "timerMinutes": 4
+            },
+            {
+              "step": 2,
+              "instruction": "Pour hot oil over garlic, scallions, and chili crisp."
+            },
+            {
+              "step": 3,
+              "instruction": "Toss noodles until glossy and top with soft-boiled egg."
+            }
+          ]
+        }
+      ],
+      "cookbooks": [
+        {
+          "id": "weeknight-20",
+          "title": "Weeknight 20-Min Dinners",
+          "description": "Fast, foolproof, and low-mess meals for busy evenings.",
+          "recipeCount": 2,
+          "isCustom": false
+        },
+        {
+          "id": "instagram-saves",
+          "title": "Saved from Instagram",
+          "description": "Viral reels and chef creations saved directly to ReciMe.",
+          "recipeCount": 3,
+          "isCustom": false
+        },
+        {
+          "id": "high-protein",
+          "title": "High Protein Staples",
+          "description": "35g+ protein per serving to fuel active recovery.",
+          "recipeCount": 2,
+          "isCustom": false
+        },
+        {
+          "id": "sweet-treats",
+          "title": "Sunday Baking & Sweets",
+          "description": "Elevated desserts and afternoon bakes.",
+          "recipeCount": 1,
+          "isCustom": false
+        }
+      ],
+      "mealPlan": [],
+      "groceryItems": []
+    }
+  }
+}

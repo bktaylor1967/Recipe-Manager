@@ -81,3 +81,13 @@ export interface MealPlanSlot {
   recipeId: string;
   servings: number;
 }
+
+export interface UserProfile {
+  id: string;
+  userId: string;
+  name: string;
+  avatarUrl: string;
+  bio?: string;
+  createdAt: string;
+}
+

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Recipe, Ingredient } from '../types/recipe';
+import { Recipe, Ingredient, Cookbook } from '../types/recipe';
 import {
   X,
   Play,
@@ -11,40 +11,52 @@ import {
   Minus,
   Plus,
   Clock,
-  Flame,
   Check,
   Instagram,
   Globe,
   ChefHat,
   Sparkles,
   Printer,
-  Copy,
+  FolderMinus,
+  FolderPlus,
+  AlertTriangle,
 } from 'lucide-react';
 import { scaleIngredient, convertUnitSystem, formatQuantity } from '../utils/unitConverter';
 
 interface RecipeDetailModalProps {
   recipe: Recipe;
+  activeCookbookId?: string | null;
+  activeCookbookTitle?: string;
+  allCookbooks?: Cookbook[];
   onClose: () => void;
   onStartCook: (recipe: Recipe) => void;
   onToggleFavorite: (id: string, e: React.MouseEvent) => void;
   onAddToMealPlan: (recipe: Recipe) => void;
   onAddAllToGrocery: (recipe: Recipe, scaledIngredients: Ingredient[]) => void;
   onDeleteRecipe: (id: string) => void;
+  onRemoveFromCookbook?: (recipeId: string, cookbookId: string) => void;
+  onOpenManageCookbooks?: (recipe: Recipe) => void;
 }
 
 export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
   recipe,
+  activeCookbookId,
+  activeCookbookTitle,
+  allCookbooks = [],
   onClose,
   onStartCook,
   onToggleFavorite,
   onAddToMealPlan,
   onAddAllToGrocery,
   onDeleteRecipe,
+  onRemoveFromCookbook,
+  onOpenManageCookbooks,
 }) => {
   const [servings, setServings] = useState(recipe.servings || 2);
   const [unitSystem, setUnitSystem] = useState<'metric' | 'imperial'>('metric');
   const [checkedIngredients, setCheckedIngredients] = useState<Record<string, boolean>>({});
   const [showShareNotification, setShowShareNotification] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const toggleCheck = (id: string) => {
     setCheckedIngredients((prev) => ({
@@ -83,6 +95,19 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
     window.print();
   };
 
+  const handleExecuteDelete = () => {
+    onDeleteRecipe(recipe.id);
+    setShowDeleteConfirm(false);
+    onClose();
+  };
+
+  const handleExecuteRemoveFromCookbook = () => {
+    if (onRemoveFromCookbook && activeCookbookId) {
+      onRemoveFromCookbook(recipe.id, activeCookbookId);
+      onClose();
+    }
+  };
+
   const renderSourceIcon = () => {
     switch (recipe.sourcePlatform) {
       case 'instagram':
@@ -99,10 +124,11 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
   };
 
   const totalMinutes = recipe.prepMinutes + recipe.cookMinutes;
+  const isInsideCookbook = activeCookbookId && recipe.cookbookIds.includes(activeCookbookId);
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex justify-center p-0 sm:p-4 md:p-6 animate-in fade-in duration-200">
-      <div className="bg-stone-50 dark:bg-stone-900 w-full max-w-3xl min-h-screen sm:min-h-0 sm:rounded-3xl overflow-hidden shadow-2xl border border-stone-200/80 dark:border-stone-800 flex flex-col my-auto">
+      <div className="bg-stone-50 dark:bg-stone-900 w-full max-w-3xl min-h-screen sm:min-h-0 sm:rounded-3xl overflow-hidden shadow-2xl border border-stone-200/80 dark:border-stone-800 flex flex-col my-auto relative">
         {/* Hero Image Section */}
         <div className="relative aspect-[16/9] sm:aspect-[21/9] w-full bg-stone-100 dark:bg-stone-800">
           <img
@@ -111,10 +137,10 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
             referrerPolicy="no-referrer"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent" />
 
-          {/* Top Actions */}
-          <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
+          {/* Top Actions Bar */}
+          <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
             <button
               onClick={onClose}
               className="p-2.5 rounded-full bg-black/50 text-white backdrop-blur-md hover:bg-black/70 transition-colors focus:outline-none"
@@ -126,6 +152,7 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
               <button
                 onClick={(e) => onToggleFavorite(recipe.id, e)}
                 className="p-2.5 rounded-full bg-black/50 text-white backdrop-blur-md hover:bg-black/70 transition-colors focus:outline-none"
+                title={recipe.isFavorite ? 'Remove favorite' : 'Add favorite'}
               >
                 <Heart
                   className={`w-5 h-5 ${
@@ -133,12 +160,21 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
                   }`}
                 />
               </button>
+
               <button
                 onClick={handleCopyLink}
                 className="p-2.5 rounded-full bg-black/50 text-white backdrop-blur-md hover:bg-black/70 transition-colors focus:outline-none"
                 title="Copy share link"
               >
                 <Share2 className="w-5 h-5" />
+              </button>
+
+              <button
+                onClick={() => setShowDeleteConfirm(true)}
+                className="p-2.5 rounded-full bg-black/50 text-stone-200 hover:text-red-400 hover:bg-black/70 backdrop-blur-md transition-colors focus:outline-none"
+                title="Delete recipe"
+              >
+                <Trash2 className="w-5 h-5" />
               </button>
             </div>
           </div>
@@ -155,7 +191,7 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
               <span aria-hidden="true">·</span>
               <span>{recipe.difficulty}</span>
             </div>
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-white drop-shadow-sm">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold font-serif tracking-tight text-white drop-shadow-sm">
               {recipe.title}
             </h1>
           </div>
@@ -168,6 +204,40 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
           </div>
         )}
 
+        {/* In-App Delete Confirmation Modal Overlay */}
+        {showDeleteConfirm && (
+          <div className="p-4 sm:p-5 bg-red-50 dark:bg-red-950/70 border-b border-red-200 dark:border-red-900 flex flex-col sm:flex-row items-center justify-between gap-4 animate-in slide-in-from-top duration-200">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-300 flex items-center justify-center shrink-0">
+                <AlertTriangle className="w-5 h-5" />
+              </div>
+              <div>
+                <span className="font-bold text-sm text-red-900 dark:text-red-200 block">
+                  Delete "{recipe.title}"?
+                </span>
+                <span className="text-xs text-red-700 dark:text-red-300">
+                  This will remove the recipe from all your cookbooks and meal plans.
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto justify-end">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="px-4 py-2 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 text-xs font-semibold hover:bg-stone-100"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleExecuteDelete}
+                className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-semibold shadow-xs"
+              >
+                Yes, Delete Recipe
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Main Content Body */}
         <div className="p-6 sm:p-8 space-y-8 flex-1">
           {/* Quick Metrics & CTA Bar */}
@@ -175,7 +245,7 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
             {/* Quick Metrics */}
             <div className="flex items-center gap-6 text-xs text-stone-600 dark:text-stone-300">
               <div>
-                <span className="text-[11px] uppercase tracking-wider text-stone-600 dark:text-stone-300 block">
+                <span className="text-[11px] uppercase tracking-wider text-stone-500 dark:text-stone-400 block">
                   Prep
                 </span>
                 <span className="text-sm font-semibold tabular-nums text-stone-900 dark:text-stone-100">
@@ -184,7 +254,7 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
               </div>
               <span className="text-stone-300 dark:text-stone-700" aria-hidden="true">|</span>
               <div>
-                <span className="text-[11px] uppercase tracking-wider text-stone-600 dark:text-stone-300 block">
+                <span className="text-[11px] uppercase tracking-wider text-stone-500 dark:text-stone-400 block">
                   Cook
                 </span>
                 <span className="text-sm font-semibold tabular-nums text-stone-900 dark:text-stone-100">
@@ -193,7 +263,7 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
               </div>
               <span className="text-stone-300 dark:text-stone-700" aria-hidden="true">|</span>
               <div>
-                <span className="text-[11px] uppercase tracking-wider text-stone-600 dark:text-stone-300 block">
+                <span className="text-[11px] uppercase tracking-wider text-stone-500 dark:text-stone-400 block">
                   Total
                 </span>
                 <span className="text-sm font-semibold tabular-nums text-stone-900 dark:text-stone-100">
@@ -204,7 +274,7 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
                 <>
                   <span className="text-stone-300 dark:text-stone-700" aria-hidden="true">|</span>
                   <div>
-                    <span className="text-[11px] uppercase tracking-wider text-stone-600 dark:text-stone-300 block">
+                    <span className="text-[11px] uppercase tracking-wider text-stone-500 dark:text-stone-400 block">
                       Calories
                     </span>
                     <span className="text-sm font-semibold tabular-nums text-stone-900 dark:text-stone-100">
@@ -218,7 +288,7 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
             {/* Primary Action: Start Cook Mode */}
             <button
               onClick={() => onStartCook(recipe)}
-              className="px-6 py-3 rounded-2xl bg-orange-600 hover:bg-orange-700 text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-md shadow-orange-600/20 active:scale-[0.98] transition-all"
+              className="px-6 py-3 rounded-2xl bg-[#FF5A1F] hover:bg-[#E84E15] text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-md shadow-orange-600/20 active:scale-[0.98] transition-all"
             >
               <Play className="w-4 h-4 fill-white" />
               <span>Start Cook Mode</span>
@@ -230,22 +300,46 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
             {recipe.description}
           </p>
 
-          {/* Action Row: Add to Plan & Add to Grocery */}
-          <div className="flex flex-wrap items-center gap-3">
+          {/* Action Row: Cookbooks Management, Meal Plan, Grocery, Print */}
+          <div className="flex flex-wrap items-center gap-2.5">
+            {/* Manage Cookbooks Button */}
+            {onOpenManageCookbooks && (
+              <button
+                onClick={() => onOpenManageCookbooks(recipe)}
+                className="px-3.5 py-2 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-700 text-xs font-semibold flex items-center gap-1.5 transition-colors"
+              >
+                <FolderPlus className="w-4 h-4 text-[#FF5A1F]" />
+                <span>Cookbooks ({recipe.cookbookIds?.length || 0})</span>
+              </button>
+            )}
+
+            {/* Remove from active cookbook if viewing inside a cookbook */}
+            {isInsideCookbook && onRemoveFromCookbook && (
+              <button
+                onClick={handleExecuteRemoveFromCookbook}
+                className="px-3.5 py-2 rounded-xl border border-orange-200 dark:border-orange-900/60 bg-orange-50 dark:bg-orange-950/40 text-[#FF5A1F] dark:text-orange-400 text-xs font-semibold flex items-center gap-1.5 transition-colors hover:bg-orange-100"
+              >
+                <FolderMinus className="w-4 h-4" />
+                <span>Remove from {activeCookbookTitle || 'this cookbook'}</span>
+              </button>
+            )}
+
             <button
               onClick={() => onAddToMealPlan(recipe)}
-              className="px-4 py-2 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-700 text-xs font-semibold flex items-center gap-1.5 transition-colors"
+              className="px-3.5 py-2 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-700 text-xs font-semibold flex items-center gap-1.5 transition-colors"
             >
-              <CalendarPlus className="w-4 h-4 text-orange-600" />
+              <CalendarPlus className="w-4 h-4 text-[#FF5A1F]" />
               <span>Add to Meal Plan</span>
             </button>
+
             <button
               onClick={handleAddGrocery}
-              className="px-4 py-2 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-700 text-xs font-semibold flex items-center gap-1.5 transition-colors"
+              className="px-3.5 py-2 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-700 text-xs font-semibold flex items-center gap-1.5 transition-colors"
             >
-              <ShoppingBag className="w-4 h-4 text-orange-600" />
-              <span>Add to Grocery List</span>
+              <ShoppingBag className="w-4 h-4 text-[#FF5A1F]" />
+              <span>Add to Groceries</span>
             </button>
+
             <button
               onClick={handlePrint}
               className="p-2 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors"
@@ -326,7 +420,7 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
                       <div
                         className={`w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${
                           isChecked
-                            ? 'bg-orange-600 border-orange-600 text-white'
+                            ? 'bg-[#FF5A1F] border-[#FF5A1F] text-white'
                             : 'border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 group-hover:border-stone-400'
                         }`}
                       >
@@ -364,7 +458,7 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
                   key={step.step}
                   className="p-4 rounded-2xl bg-white dark:bg-stone-800/60 border border-stone-200/80 dark:border-stone-800 flex gap-4"
                 >
-                  <div className="w-7 h-7 rounded-xl bg-orange-100 dark:bg-orange-950/60 text-orange-700 dark:text-orange-400 font-bold text-xs flex items-center justify-center shrink-0">
+                  <div className="w-7 h-7 rounded-xl bg-orange-100 dark:bg-orange-950/60 text-[#FF5A1F] font-bold text-xs flex items-center justify-center shrink-0">
                     {step.step}
                   </div>
 
@@ -376,7 +470,7 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
                     {step.timerMinutes && step.timerMinutes > 0 && (
                       <button
                         onClick={() => onStartCook(recipe)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-orange-50 dark:bg-orange-950/40 border border-orange-200 dark:border-orange-900/60 text-orange-700 dark:text-orange-400 text-xs font-medium hover:bg-orange-100 transition-colors"
+                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-orange-50 dark:bg-orange-950/40 border border-orange-200 dark:border-orange-900/60 text-[#FF5A1F] text-xs font-medium hover:bg-orange-100 transition-colors"
                       >
                         <Clock className="w-3.5 h-3.5" />
                         <span>Timer: {step.timerMinutes} mins</span>
@@ -396,7 +490,7 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
             </div>
           )}
 
-          {/* Footer Actions: Delete / Source Link */}
+          {/* Footer Actions: Source Link & In-App Delete */}
           <div className="pt-6 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between text-xs text-stone-500">
             {recipe.sourceUrl ? (
               <a
@@ -409,17 +503,12 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
                 <Globe className="w-3.5 h-3.5" />
               </a>
             ) : (
-              <span>Created in ReciMe</span>
+              <span>Saved in ReciMe</span>
             )}
 
             <button
-              onClick={() => {
-                if (confirm('Are you sure you want to delete this recipe from your collection?')) {
-                  onDeleteRecipe(recipe.id);
-                  onClose();
-                }
-              }}
-              className="text-red-500 hover:text-red-600 flex items-center gap-1 transition-colors"
+              onClick={() => setShowDeleteConfirm(true)}
+              className="text-red-500 hover:text-red-600 flex items-center gap-1.5 font-medium transition-colors"
             >
               <Trash2 className="w-3.5 h-3.5" />
               <span>Delete Recipe</span>

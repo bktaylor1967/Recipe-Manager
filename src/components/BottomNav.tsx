@@ -1,9 +1,10 @@
 import React from 'react';
-import { BookOpen, Compass, CalendarDays, ShoppingBag, Plus } from 'lucide-react';
+import { Bookmark, Calendar, ShoppingCart, Compass, Plus } from 'lucide-react';
+import { MainNavTab } from './Sidebar';
 
 interface BottomNavProps {
-  currentTab: 'recipes' | 'discover' | 'plan' | 'grocery';
-  setCurrentTab: (tab: 'recipes' | 'discover' | 'plan' | 'grocery') => void;
+  currentTab: MainNavTab;
+  setCurrentTab: (tab: MainNavTab) => void;
   onOpenImport: () => void;
   groceryCount: number;
 }
@@ -15,72 +16,92 @@ export const BottomNav: React.FC<BottomNavProps> = ({
   groceryCount,
 }) => {
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-stone-50/95 dark:bg-stone-900/95 backdrop-blur-lg border-t border-stone-200/80 dark:border-stone-800 pb-safe">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FAF8F5]/95 dark:bg-[#151413]/95 backdrop-blur-lg border-t border-stone-200/80 dark:border-stone-800 pb-safe select-none">
       <div className="grid grid-cols-5 items-center h-16 max-w-md mx-auto px-2">
+        {/* Cookbooks */}
         <button
-          onClick={() => setCurrentTab('recipes')}
+          onClick={() => setCurrentTab('cookbooks')}
           className={`min-h-[44px] flex flex-col items-center justify-center transition-colors ${
-            currentTab === 'recipes'
-              ? 'text-orange-600 dark:text-orange-500 font-medium'
-              : 'text-stone-500 dark:text-stone-400 hover:text-stone-800'
+            currentTab === 'cookbooks'
+              ? 'text-[#FF5A1F] font-semibold'
+              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900'
           }`}
         >
-          <BookOpen className="w-5 h-5" />
-          <span className="text-[10px] mt-1 tracking-tight">Recipes</span>
+          <Bookmark
+            className={`w-5 h-5 ${
+              currentTab === 'cookbooks' ? 'fill-current' : 'stroke-[1.8]'
+            }`}
+          />
+          <span className="text-[10px] mt-1 tracking-tight">Cookbooks</span>
         </button>
 
-        <button
-          onClick={() => setCurrentTab('discover')}
-          className={`min-h-[44px] flex flex-col items-center justify-center transition-colors ${
-            currentTab === 'discover'
-              ? 'text-orange-600 dark:text-orange-500 font-medium'
-              : 'text-stone-500 dark:text-stone-400 hover:text-stone-800'
-          }`}
-        >
-          <Compass className="w-5 h-5" />
-          <span className="text-[10px] mt-1 tracking-tight">Discover</span>
-        </button>
-
-        {/* Center Primary Action: Quick Save */}
-        <div className="flex items-center justify-center">
-          <button
-            onClick={onOpenImport}
-            aria-label="Save recipe"
-            className="w-12 h-12 rounded-full bg-orange-600 text-white flex items-center justify-center shadow-md shadow-orange-600/30 active:scale-95 transition-transform"
-          >
-            <Plus className="w-6 h-6 stroke-[2.5]" />
-          </button>
-        </div>
-
+        {/* Meal Plan */}
         <button
           onClick={() => setCurrentTab('plan')}
           className={`min-h-[44px] flex flex-col items-center justify-center transition-colors ${
             currentTab === 'plan'
-              ? 'text-orange-600 dark:text-orange-500 font-medium'
-              : 'text-stone-500 dark:text-stone-400 hover:text-stone-800'
+              ? 'text-[#FF5A1F] font-semibold'
+              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900'
           }`}
         >
-          <CalendarDays className="w-5 h-5" />
-          <span className="text-[10px] mt-1 tracking-tight">Planner</span>
+          <Calendar
+            className={`w-5 h-5 ${
+              currentTab === 'plan' ? 'stroke-[2.3]' : 'stroke-[1.8]'
+            }`}
+          />
+          <span className="text-[10px] mt-1 tracking-tight">Meal Plan</span>
         </button>
 
+        {/* Center Primary Action: ReciMe Orange Circular + Button */}
+        <div className="flex items-center justify-center">
+          <button
+            onClick={onOpenImport}
+            aria-label="Save or import recipe"
+            className="w-11 h-11 rounded-full bg-[#FF5A1F] text-white flex items-center justify-center shadow-md shadow-orange-600/30 active:scale-95 transition-transform"
+          >
+            <Plus className="w-5 h-5 stroke-[2.7]" />
+          </button>
+        </div>
+
+        {/* Groceries */}
         <button
           onClick={() => setCurrentTab('grocery')}
           className={`min-h-[44px] flex flex-col items-center justify-center relative transition-colors ${
             currentTab === 'grocery'
-              ? 'text-orange-600 dark:text-orange-500 font-medium'
-              : 'text-stone-500 dark:text-stone-400 hover:text-stone-800'
+              ? 'text-[#FF5A1F] font-semibold'
+              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900'
           }`}
         >
           <div className="relative">
-            <ShoppingBag className="w-5 h-5" />
+            <ShoppingCart
+              className={`w-5 h-5 ${
+                currentTab === 'grocery' ? 'stroke-[2.3]' : 'stroke-[1.8]'
+              }`}
+            />
             {groceryCount > 0 && (
-              <span className="absolute -top-1 -right-2 min-w-[16px] h-4 px-1 rounded-full bg-orange-600 text-[9px] font-bold text-white flex items-center justify-center">
+              <span className="absolute -top-1 -right-2 min-w-[15px] h-3.5 px-1 rounded-full bg-[#FF5A1F] text-[9px] font-bold text-white flex items-center justify-center">
                 {groceryCount}
               </span>
             )}
           </div>
-          <span className="text-[10px] mt-1 tracking-tight">Grocery</span>
+          <span className="text-[10px] mt-1 tracking-tight">Groceries</span>
+        </button>
+
+        {/* Discover */}
+        <button
+          onClick={() => setCurrentTab('discover')}
+          className={`min-h-[44px] flex flex-col items-center justify-center transition-colors ${
+            currentTab === 'discover'
+              ? 'text-[#FF5A1F] font-semibold'
+              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900'
+          }`}
+        >
+          <Compass
+            className={`w-5 h-5 ${
+              currentTab === 'discover' ? 'stroke-[2.3]' : 'stroke-[1.8]'
+            }`}
+          />
+          <span className="text-[10px] mt-1 tracking-tight">Discover</span>
         </button>
       </div>
     </div>
