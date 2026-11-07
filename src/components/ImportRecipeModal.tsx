@@ -14,11 +14,13 @@ import {
   Trash2,
   Instagram,
   Upload,
+  Puzzle,
 } from 'lucide-react';
 
 interface ImportRecipeModalProps {
   onClose: () => void;
   onSaveRecipe: (newRecipe: Recipe) => void;
+  onOpenExtension?: () => void;
 }
 
 type TabType = 'link' | 'photo' | 'text' | 'ai' | 'manual';
@@ -26,6 +28,7 @@ type TabType = 'link' | 'photo' | 'text' | 'ai' | 'manual';
 export const ImportRecipeModal: React.FC<ImportRecipeModalProps> = ({
   onClose,
   onSaveRecipe,
+  onOpenExtension,
 }) => {
   const [activeTab, setActiveTab] = useState<TabType>('link');
   const [isLoading, setIsLoading] = useState(false);
@@ -397,7 +400,7 @@ Steps:
         <div className="px-6 py-5 border-b border-stone-200 dark:border-stone-800 flex items-center justify-between bg-white dark:bg-stone-900">
           <div>
             <h2 className="text-lg font-bold text-stone-900 dark:text-stone-100 flex items-center gap-2">
-              <span>Save to ReciMe</span>
+              <span>Save Recipe</span>
               <span className="text-xs px-2 py-0.5 rounded-md bg-orange-100 dark:bg-orange-950 text-orange-700 dark:text-orange-400 font-semibold">
                 AI Powered
               </span>
@@ -548,6 +551,35 @@ Steps:
                   </button>
                 </div>
               </div>
+
+              {/* Companion Browser Extension Callout */}
+              {onOpenExtension && (
+                <div className="p-3.5 rounded-2xl bg-[#FEEFEA]/60 dark:bg-orange-950/20 border border-orange-200/80 dark:border-orange-900/40 flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-xl bg-orange-100 dark:bg-orange-900/40 text-[#FF5A1F] flex items-center justify-center shrink-0">
+                      <Puzzle className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-stone-900 dark:text-stone-100">
+                        Capture directly while browsing?
+                      </p>
+                      <p className="text-[11px] text-stone-500 dark:text-stone-400">
+                        Use the browser extension for 1-click recipe saving from Instagram, TikTok & web blogs.
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      onOpenExtension();
+                    }}
+                    className="px-3 py-1.5 rounded-xl bg-[#FF5A1F] hover:bg-[#E84E15] text-white text-xs font-semibold shadow-xs transition-colors shrink-0"
+                  >
+                    Open Hub
+                  </button>
+                </div>
+              )}
             </div>
           )}
 
@@ -801,7 +833,7 @@ Steps:
               ) : (
                 <>
                   <Sparkles className="w-4 h-4" />
-                  <span>Import with ReciMe</span>
+                  <span>Import Recipe</span>
                 </>
               )}
             </button>

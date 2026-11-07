@@ -503,7 +503,7 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
                 <Globe className="w-3.5 h-3.5" />
               </a>
             ) : (
-              <span>Saved in ReciMe</span>
+              <span>Saved in Cookbook</span>
             )}
 
             <button

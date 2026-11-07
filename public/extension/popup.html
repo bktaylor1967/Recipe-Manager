@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReciMe - Save Recipe</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    body {
+      width: 340px;
+      background: #FAF8F5;
+      color: #1C1917;
+      padding: 16px;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #E7E5E4;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-icon {
+      width: 24px;
+      height: 24px;
+      background: #FF5A1F;
+      color: white;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .brand-name {
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+    }
+    .user-badge {
+      font-size: 11px;
+      color: #FF5A1F;
+      background: #FEEFEA;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .recipe-card {
+      background: white;
+      border-radius: 16px;
+      border: 1px solid #E7E5E4;
+      overflow: hidden;
+      margin-bottom: 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .recipe-img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      background: #E7E5E4;
+      display: block;
+    }
+    .recipe-info {
+      padding: 12px;
+    }
+    .recipe-meta {
+      font-size: 11px;
+      color: #78716C;
+      margin-bottom: 4px;
+      display: flex;
+      gap: 6px;
+    }
+    .recipe-title {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 6px;
+      color: #1C1917;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .stats-row {
+      display: flex;
+      gap: 12px;
+      font-size: 11px;
+      color: #57534E;
+      font-weight: 600;
+    }
+    .cookbook-select-group {
+      margin-bottom: 14px;
+    }
+    .cookbook-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #57534E;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .cookbook-select {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid #D6D3D1;
+      background: white;
+      font-size: 12px;
+      color: #1C1917;
+      outline: none;
+    }
+    .btn-save {
+      width: 100%;
+      padding: 11px;
+      background: #FF5A1F;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(255, 90, 31, 0.25);
+      transition: background 0.15s;
+    }
+    .btn-save:hover {
+      background: #E84E15;
+    }
+    .btn-save:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .success-panel {
+      display: none;
+      text-align: center;
+      padding: 16px 8px;
+    }
+    .success-icon {
+      width: 44px;
+      height: 44px;
+      background: #DCFCE7;
+      color: #16A34A;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin: 0 auto 10px;
+      font-weight: bold;
+    }
+    .success-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .success-sub {
+      font-size: 12px;
+      color: #78716C;
+      margin-bottom: 14px;
+    }
+    .btn-view {
+      display: block;
+      text-decoration: none;
+      padding: 9px;
+      background: white;
+      color: #1C1917;
+      border: 1px solid #D6D3D1;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .settings-view {
+      display: none;
+    }
+    .input-group {
+      margin-bottom: 10px;
+    }
+    .input-label {
+      font-size: 11px;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 3px;
+    }
+    .text-input {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #D6D3D1;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Main View -->
+  <div id="mainView">
+    <div class="header">
+      <div class="brand">
+        <div class="brand-icon">R</div>
+        <span class="brand-name">ReciMe</span>
+      </div>
+      <span class="user-badge" id="userBadge">@bktaylor</span>
+    </div>
+
+    <div class="recipe-card" id="recipeCard">
+      <img id="recipeImage" class="recipe-img" src="" alt="Recipe image" style="display: none;" />
+      <div class="recipe-info">
+        <div class="recipe-meta" id="recipeSource">Detected on page</div>
+        <div class="recipe-title" id="recipeTitle">Scanning page for recipe...</div>
+        <div class="stats-row">
+          <span id="recipeTime">-- min</span>
+          <span>·</span>
+          <span id="recipeIngredients">-- ingredients</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cookbook-select-group">
+      <label class="cookbook-label" for="cookbookSelect">Save to Cookbook:</label>
+      <select id="cookbookSelect" class="cookbook-select">
+        <option value="weeknight-20">Weeknight 20-Min Dinners</option>
+        <option value="instagram-saves">Saved from Instagram</option>
+        <option value="high-protein">High Protein Staples</option>
+        <option value="all">All Recipes</option>
+      </select>
+    </div>
+
+    <button id="saveBtn" class="btn-save">
+      <span>Save to ReciMe</span>
+    </button>
+  </div>
+
+  <!-- Success View -->
+  <div class="success-panel" id="successView">
+    <div class="success-icon">✓</div>
+    <div class="success-title">Recipe Saved!</div>
+    <div class="success-sub" id="successDesc">Added to your ReciMe cookbook.</div>
+    <a href="#" id="openInAppBtn" class="btn-view" target="_blank">Open in ReciMe App →</a>
+  </div>
+
+  <!-- Settings View -->
+  <div class="settings-view" id="settingsView">
+    <div class="header">
+      <span class="brand-name">ReciMe Settings</span>
+      <button id="closeSettingsBtn" style="background: none; border: none; cursor: pointer; font-size: 14px;">✕</button>
+    </div>
+    <div class="input-group">
+      <label class="input-label">ReciMe App URL:</label>
+      <input type="text" id="appUrlInput" class="text-input" />
+    </div>
+    <div class="input-group">
+      <label class="input-label">User ID (Profile):</label>
+      <input type="text" id="userIdInput" class="text-input" placeholder="bktaylor" />
+    </div>
+    <button id="saveSettingsBtn" class="btn-save" style="margin-top: 10px;">Save Settings</button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

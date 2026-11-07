@@ -77,7 +77,7 @@ export const GroceryListView: React.FC<GroceryListViewProps> = ({
   const handleCopyList = () => {
     if (items.length === 0) return;
 
-    let text = '🛒 ReciMe Grocery List:\n\n';
+    let text = '🛒 Grocery Shopping List:\n\n';
     CATEGORY_ORDER.forEach((cat) => {
       const catItems = groupedItems[cat];
       if (catItems && catItems.length > 0) {

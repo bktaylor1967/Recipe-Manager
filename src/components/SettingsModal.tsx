@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Sun, Moon, Scale, Users, Utensils, Download, Check, Sparkles } from 'lucide-react';
+import { X, Sun, Moon, Scale, Users, Utensils, Download, Check, Sparkles, Puzzle } from 'lucide-react';
 
 interface SettingsModalProps {
   onClose: () => void;
@@ -9,6 +9,7 @@ interface SettingsModalProps {
   setDefaultServings: (servings: number) => void;
   defaultUnit: 'metric' | 'imperial';
   setDefaultUnit: (unit: 'metric' | 'imperial') => void;
+  onOpenExtension?: () => void;
 }
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({
@@ -19,6 +20,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   setDefaultServings,
   defaultUnit,
   setDefaultUnit,
+  onOpenExtension,
 }) => {
   const [dietaryPrefs, setDietaryPrefs] = useState<string[]>([
     'High-Protein',
@@ -70,7 +72,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               Settings & Preferences
             </h2>
             <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
-              Customize your ReciMe cooking experience
+              Customize your cooking and recipe preferences
             </p>
           </div>
           <button
@@ -199,6 +201,34 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               );
             })}
           </div>
+        </div>
+
+        {/* Setting 5: Browser Extension */}
+        <div className="p-4 rounded-2xl bg-[#FEEFEA]/50 dark:bg-orange-950/20 border border-orange-200/80 dark:border-orange-900/40 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-orange-100 dark:bg-orange-900/40 text-[#FF5A1F] flex items-center justify-center">
+              <Puzzle className="w-4 h-4" />
+            </div>
+            <div>
+              <span className="text-sm font-semibold text-stone-900 dark:text-stone-100 block">
+                Chrome & Edge Extension
+              </span>
+              <span className="text-xs text-stone-500 dark:text-stone-400">
+                1-click recipe capture directly while browsing Instagram, TikTok & blogs
+              </span>
+            </div>
+          </div>
+          {onOpenExtension && (
+            <button
+              onClick={() => {
+                onClose();
+                onOpenExtension();
+              }}
+              className="px-3 py-1.5 rounded-xl bg-[#FF5A1F] hover:bg-[#E84E15] text-white text-xs font-semibold shadow-xs transition-colors shrink-0"
+            >
+              Open Hub
+            </button>
+          )}
         </div>
 
         {/* Footer Actions */}

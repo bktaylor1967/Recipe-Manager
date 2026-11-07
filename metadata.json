@@ -1,6 +1,8 @@
 {
-  "name": "ReciMe - Recipe Keeper & Meal Planner",
+  "name": "Recipe Keeper & Meal Planner",
   "description": "Save recipes from Instagram, TikTok, blogs, or photos. Organize cookbooks, plan meals, build smart grocery lists, and cook hands-free.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

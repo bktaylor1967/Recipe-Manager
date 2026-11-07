@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "Recipe Keeper - Save Recipe from Anywhere",
+  "version": "1.0.0",
+  "description": "Save recipes from Instagram, TikTok, YouTube, food blogs, or any website directly into your cookbooks with 1 click.",
+  "icons": {
+    "16": "icon-48.png",
+    "48": "icon-48.png",
+    "128": "icon-48.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon-48.png",
+      "48": "icon-48.png"
+    },
+    "default_title": "Save to Recipe Keeper"
+  },
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

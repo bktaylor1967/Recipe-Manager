@@ -158,7 +158,7 @@ export const MealPlannerView: React.FC<MealPlannerViewProps> = ({
           <h1 className="text-2xl font-bold tracking-tight text-stone-900 dark:text-stone-100 flex items-center gap-2">
             <span>Weekly Meal Planner</span>
             <span className="text-xs px-2.5 py-1 rounded-md bg-orange-100 dark:bg-orange-950 text-orange-700 dark:text-orange-400 font-semibold">
-              ReciMe Pro
+              Smart Planner
             </span>
           </h1>
           <p className="text-xs text-stone-500 dark:text-stone-400 mt-1">

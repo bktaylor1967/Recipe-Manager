@@ -180,10 +180,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             <div>
               <h2 className="text-lg font-bold font-serif text-stone-900 dark:text-stone-100">
                 {mode === 'profile'
-                  ? 'Your ReciMe Profile'
+                  ? 'Your Recipe Profile'
                   : mode === 'register'
                   ? 'Create Profile'
-                  : 'Log in to ReciMe'}
+                  : 'Log In'}
               </h2>
               <p className="text-xs text-stone-500 dark:text-stone-400">
                 {mode === 'profile'

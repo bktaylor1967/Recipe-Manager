@@ -11,6 +11,61 @@
     "data": {
       "recipes": [
         {
+          "id": "recipe-ext-1794062127580",
+          "title": "Test Extension Recipe",
+          "description": "Saved with ReciMe Browser Extension.",
+          "author": "TikTok Chef",
+          "sourceUrl": "",
+          "sourcePlatform": "web",
+          "imageUrl": "/src/assets/images/honey_halloumi_bowl_1794058992953.jpg",
+          "servings": 2,
+          "prepMinutes": 10,
+          "cookMinutes": 20,
+          "difficulty": "Easy",
+          "cuisine": "International",
+          "calories": 450,
+          "proteinGrams": 22,
+          "tags": [
+            "Saved from Web",
+            "Browser Extension"
+          ],
+          "cookbookIds": [
+            "weeknight-20"
+          ],
+          "isFavorite": false,
+          "rating": 5,
+          "createdAt": "2026-11-07T14:35:27.580Z",
+          "ingredients": [
+            {
+              "id": "ing-ext-1794062127580-0",
+              "item": "Pasta",
+              "quantity": 1,
+              "unit": "unit",
+              "category": "Pantry",
+              "originalText": "Pasta"
+            },
+            {
+              "id": "ing-ext-1794062127580-1",
+              "item": "Garlic",
+              "quantity": 1,
+              "unit": "unit",
+              "category": "Pantry",
+              "originalText": "Garlic"
+            }
+          ],
+          "instructions": [
+            {
+              "step": 1,
+              "instruction": "Boil"
+            },
+            {
+              "step": 2,
+              "instruction": "Toss"
+            }
+          ],
+          "notes": "Imported via ReciMe 1-Click Browser Extension."
+        },
+        {
           "id": "recipe-tuscan-salmon",
           "title": "Crispy Skin Creamy Tuscan Salmon",
           "description": "Pan-seared Atlantic salmon fillets with shatteringly crisp skin, simmered in a velvety garlic, sun-dried tomato, and baby spinach cream sauce.",

@@ -23,6 +23,7 @@ import { DiscoverFeed } from './components/DiscoverFeed';
 import { SettingsModal } from './components/SettingsModal';
 import { AuthModal } from './components/AuthModal';
 import { ManageCookbooksModal } from './components/ManageCookbooksModal';
+import { ExtensionModal } from './components/ExtensionModal';
 import {
   Search,
   Plus,
@@ -31,6 +32,7 @@ import {
   Sun,
   Moon,
   User,
+  Puzzle,
 } from 'lucide-react';
 
 const DEFAULT_USER: UserProfile = {
@@ -100,6 +102,7 @@ export default function App() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isExtensionModalOpen, setIsExtensionModalOpen] = useState(false);
   const [managingCookbooksRecipe, setManagingCookbooksRecipe] = useState<Recipe | null>(null);
 
   // Filters & Search
@@ -447,6 +450,7 @@ export default function App() {
         onOpenImport={() => setIsImportModalOpen(true)}
         onOpenAuth={() => setIsAuthModalOpen(true)}
         onOpenSettings={() => setIsSettingsModalOpen(true)}
+        onOpenExtension={() => setIsExtensionModalOpen(true)}
         isDark={isDark}
         toggleDark={toggleDark}
         groceryCount={groceryItems.filter((i) => !i.checked).length}
@@ -535,6 +539,15 @@ export default function App() {
                   Log in
                 </button>
               )}
+
+              <button
+                onClick={() => setIsExtensionModalOpen(true)}
+                title="ReciMe Browser Extension & Simulator"
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-stone-700 dark:text-stone-300 bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors"
+              >
+                <Puzzle className="w-3.5 h-3.5 text-[#FF5A1F]" />
+                <span>Extension</span>
+              </button>
 
               <button
                 onClick={() => setIsImportModalOpen(true)}
@@ -752,6 +765,7 @@ export default function App() {
         <ImportRecipeModal
           onClose={() => setIsImportModalOpen(false)}
           onSaveRecipe={handleSaveRecipe}
+          onOpenExtension={() => setIsExtensionModalOpen(true)}
         />
       )}
 
@@ -776,6 +790,7 @@ export default function App() {
           setDefaultServings={setDefaultServings}
           defaultUnit={defaultUnit}
           setDefaultUnit={setDefaultUnit}
+          onOpenExtension={() => setIsExtensionModalOpen(true)}
         />
       )}
 
@@ -789,6 +804,16 @@ export default function App() {
           onUpdateProfile={handleUpdateProfile}
           recipeCount={recipes.length}
           cookbookCount={cookbooks.length}
+        />
+      )}
+
+      {/* MODAL: Browser Extension Hub & Live Simulator */}
+      {isExtensionModalOpen && (
+        <ExtensionModal
+          currentUser={currentUser}
+          cookbooks={cookbooks}
+          onClose={() => setIsExtensionModalOpen(false)}
+          onSaveRecipe={handleSaveRecipe}
         />
       )}
     </div>

@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs';
 import crypto from 'crypto';
+import JSZip from 'jszip';
 import { fileURLToPath } from 'url';
 
 dotenv.config();
@@ -614,6 +615,127 @@ app.put('/api/user/profile', (req, res) => {
       createdAt: usersDb[cleanUserId].createdAt,
     },
   });
+});
+
+// ==========================================
+// BROWSER EXTENSION API ENDPOINTS
+// ==========================================
+
+// Save recipe from browser extension
+app.post('/api/extension/save-recipe', (req, res) => {
+  try {
+    const { userId, cookbookId, recipe } = req.body;
+    const cleanUserId = (userId || 'bktaylor').toLowerCase();
+
+    const user = usersDb[cleanUserId] || usersDb['bktaylor'];
+    if (!user) {
+      return res.status(404).json({ error: 'User profile not found' });
+    }
+
+    const assignedCookbookIds: string[] = [];
+    if (cookbookId && cookbookId !== 'all') {
+      assignedCookbookIds.push(cookbookId);
+    } else {
+      assignedCookbookIds.push('weeknight-20');
+    }
+
+    const newRecipe = {
+      id: `recipe-ext-${Date.now()}`,
+      title: recipe.title || 'Saved Web Recipe',
+      description: recipe.description || 'Saved with ReciMe Browser Extension.',
+      author: recipe.author || 'Web Recipe',
+      sourceUrl: recipe.sourceUrl || '',
+      sourcePlatform: recipe.sourcePlatform || 'web',
+      imageUrl: recipe.imageUrl || '/src/assets/images/honey_halloumi_bowl_1794058992953.jpg',
+      servings: recipe.servings || 2,
+      prepMinutes: recipe.prepMinutes || 10,
+      cookMinutes: recipe.cookMinutes || 20,
+      difficulty: recipe.difficulty || 'Easy',
+      cuisine: recipe.cuisine || 'International',
+      calories: recipe.calories || 450,
+      proteinGrams: recipe.proteinGrams || 22,
+      tags: recipe.tags || ['Saved from Web', 'Browser Extension'],
+      cookbookIds: assignedCookbookIds,
+      isFavorite: false,
+      rating: 5.0,
+      createdAt: new Date().toISOString(),
+      ingredients: (recipe.ingredients || []).map((ing: any, i: number) => ({
+        id: `ing-ext-${Date.now()}-${i}`,
+        item: typeof ing === 'string' ? ing : ing.item || 'Ingredient',
+        quantity: typeof ing.quantity === 'number' ? ing.quantity : 1,
+        unit: ing.unit || 'unit',
+        category: ing.category || 'Pantry',
+        originalText: typeof ing === 'string' ? ing : ing.originalText || ing.item || 'Ingredient',
+      })),
+      instructions: (recipe.instructions || []).map((step: any, i: number) => ({
+        step: i + 1,
+        instruction: typeof step === 'string' ? step : step.instruction || 'Step instruction',
+      })),
+      notes: 'Imported via ReciMe 1-Click Browser Extension.',
+    };
+
+    user.data.recipes = [newRecipe, ...(user.data.recipes || [])];
+    saveDb();
+
+    return res.json({
+      success: true,
+      message: 'Recipe saved to ReciMe!',
+      recipe: newRecipe,
+    });
+  } catch (err: any) {
+    console.error('Extension save error:', err);
+    return res.status(500).json({ error: 'Failed to save recipe from extension' });
+  }
+});
+
+// Get user cookbooks for extension dropdown
+app.get('/api/extension/cookbooks', (req, res) => {
+  const userId = ((req.query.userId as string) || 'bktaylor').toLowerCase();
+  const user = usersDb[userId] || usersDb['bktaylor'];
+  if (!user) {
+    return res.json({ cookbooks: SEED_COOKBOOKS });
+  }
+  return res.json({ cookbooks: user.data?.cookbooks || SEED_COOKBOOKS });
+});
+
+// Download Chrome Extension ZIP bundle
+app.get('/api/extension/download-zip', async (req, res) => {
+  try {
+    const extDir = path.resolve(__dirname, 'public', 'extension');
+    const zip = new JSZip();
+
+    const files = ['manifest.json', 'content.js', 'background.js', 'popup.html', 'popup.js', 'icon-48.png'];
+
+    for (const f of files) {
+      const filePath = path.join(extDir, f);
+      if (fs.existsSync(filePath)) {
+        const content = fs.readFileSync(filePath);
+        zip.file(f, content);
+      }
+    }
+
+    // Add a README.md explaining installation
+    zip.file(
+      'README.md',
+      `# ReciMe Chrome & Edge Extension\n\n` +
+      `### How to install in Google Chrome / Brave / Microsoft Edge:\n\n` +
+      `1. Open Google Chrome and go to: chrome://extensions\n` +
+      `2. Enable "Developer mode" using the toggle in the top-right corner.\n` +
+      `3. Click the "Load unpacked" button in the top-left corner.\n` +
+      `4. Select this unzipped folder.\n` +
+      `5. Done! You will now see the ReciMe icon in your extensions toolbar.\n` +
+      `\nBrowse to any recipe on Instagram, TikTok, NYT Cooking, or food blogs and click the icon to save recipes into your account in 1 click!\n`
+    );
+
+    const zipBuffer = await zip.generateAsync({ type: 'nodebuffer' });
+
+    res.setHeader('Content-Type', 'application/zip');
+    res.setHeader('Content-Disposition', 'attachment; filename="recime-chrome-extension.zip"');
+    return res.send(zipBuffer);
+  } catch (err: any) {
+    console.error('Error generating extension zip:', err);
+    return res.status(500).json({ error: 'Failed to generate extension zip' });
+  }
 });
 
 // ==========================================

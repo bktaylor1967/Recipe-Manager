@@ -14,6 +14,7 @@ import {
   User,
   Heart,
   BookOpen,
+  Puzzle,
 } from 'lucide-react';
 
 import { UserProfile } from '../types/recipe';
@@ -27,6 +28,7 @@ interface SidebarProps {
   onOpenImport: () => void;
   onOpenAuth: () => void;
   onOpenSettings: () => void;
+  onOpenExtension?: () => void;
   isDark: boolean;
   toggleDark: () => void;
   groceryCount: number;
@@ -39,6 +41,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onOpenImport,
   onOpenAuth,
   onOpenSettings,
+  onOpenExtension,
   isDark,
   toggleDark,
   groceryCount,
@@ -211,7 +214,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     R
                   </div>
                   <span className="text-xl font-bold tracking-tight text-stone-900 dark:text-stone-100 font-serif">
-                    ReciMe
+                    Recipe Keeper
                   </span>
                 </div>
                 <button
@@ -288,6 +291,24 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   <Compass className="w-4 h-4" />
                   <span>Discover Creators</span>
                 </button>
+
+                {onOpenExtension && (
+                  <button
+                    onClick={() => {
+                      setIsExpanded(false);
+                      onOpenExtension();
+                    }}
+                    className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-stone-700 dark:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800 transition-colors group"
+                  >
+                    <div className="flex items-center gap-3">
+                      <Puzzle className="w-4 h-4 text-[#FF5A1F] group-hover:rotate-12 transition-transform" />
+                      <span>Browser Extension</span>
+                    </div>
+                    <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#FF5A1F]/10 text-[#FF5A1F] dark:bg-orange-950/60 dark:text-orange-400">
+                      Chrome
+                    </span>
+                  </button>
+                )}
               </div>
             </div>
 
