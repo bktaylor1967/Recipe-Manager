@@ -20,6 +20,8 @@ import {
   FolderMinus,
   FolderPlus,
   AlertTriangle,
+  Activity,
+  Flame,
 } from 'lucide-react';
 import { scaleIngredient, convertUnitSystem, formatQuantity } from '../utils/unitConverter';
 
@@ -125,6 +127,12 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
 
   const totalMinutes = recipe.prepMinutes + recipe.cookMinutes;
   const isInsideCookbook = activeCookbookId && recipe.cookbookIds.includes(activeCookbookId);
+  const proteinValue = recipe.protein ?? recipe.proteinGrams;
+  const hasNutrition =
+    recipe.calories !== undefined ||
+    proteinValue !== undefined ||
+    recipe.carbs !== undefined ||
+    recipe.fat !== undefined;
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex justify-center p-0 sm:p-4 md:p-6 animate-in fade-in duration-200">
@@ -270,7 +278,7 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
                   {totalMinutes} min
                 </span>
               </div>
-              {recipe.calories && (
+              {recipe.calories !== undefined && (
                 <>
                   <span className="text-stone-300 dark:text-stone-700" aria-hidden="true">|</span>
                   <div>
@@ -279,6 +287,19 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
                     </span>
                     <span className="text-sm font-semibold tabular-nums text-stone-900 dark:text-stone-100">
                       {recipe.calories} kcal
+                    </span>
+                  </div>
+                </>
+              )}
+              {proteinValue !== undefined && (
+                <>
+                  <span className="text-stone-300 dark:text-stone-700" aria-hidden="true">|</span>
+                  <div>
+                    <span className="text-[11px] uppercase tracking-wider text-stone-500 dark:text-stone-400 block">
+                      Protein
+                    </span>
+                    <span className="text-sm font-semibold tabular-nums text-emerald-600 dark:text-emerald-400">
+                      {proteinValue}g
                     </span>
                   </div>
                 </>
@@ -299,6 +320,99 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
           <p className="text-sm sm:text-base text-stone-700 dark:text-stone-300 leading-relaxed">
             {recipe.description}
           </p>
+
+          {/* Nutritional Breakdown Card (displayed when nutritional values are available) */}
+          {hasNutrition && (
+            <div className="p-4 sm:p-5 rounded-2xl bg-[#FAF8F5] dark:bg-stone-850 border border-stone-200/80 dark:border-stone-800 shadow-xs space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-lg bg-orange-100 dark:bg-orange-950/60 text-[#FF5A1F] flex items-center justify-center">
+                    <Activity className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-stone-900 dark:text-stone-100">
+                      Nutrition per Serving
+                    </h3>
+                    <p className="text-[11px] text-stone-500 dark:text-stone-400">
+                      Nutritional estimate based on {recipe.servings || 2} standard servings
+                    </p>
+                  </div>
+                </div>
+                {recipe.calories !== undefined && (
+                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 dark:bg-orange-950/40 text-[#FF5A1F] text-xs font-bold border border-orange-200/70 dark:border-orange-900/50">
+                    <Flame className="w-3.5 h-3.5 fill-current" />
+                    <span>{recipe.calories} kcal</span>
+                  </div>
+                )}
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
+                {recipe.calories !== undefined && (
+                  <div className="p-3 rounded-xl bg-white dark:bg-stone-800/80 border border-stone-200/70 dark:border-stone-700/60 flex flex-col justify-between">
+                    <span className="text-[11px] text-stone-500 dark:text-stone-400 font-medium">
+                      Calories
+                    </span>
+                    <div className="flex items-baseline gap-1 mt-1">
+                      <span className="text-xl font-bold tabular-nums text-stone-900 dark:text-stone-100 font-serif">
+                        {recipe.calories}
+                      </span>
+                      <span className="text-[11px] font-semibold text-stone-500 dark:text-stone-400">
+                        kcal
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                {proteinValue !== undefined && (
+                  <div className="p-3 rounded-xl bg-white dark:bg-stone-800/80 border border-stone-200/70 dark:border-stone-700/60 flex flex-col justify-between">
+                    <span className="text-[11px] text-stone-500 dark:text-stone-400 font-medium">
+                      Protein
+                    </span>
+                    <div className="flex items-baseline gap-1 mt-1">
+                      <span className="text-xl font-bold tabular-nums text-emerald-600 dark:text-emerald-400 font-serif">
+                        {proteinValue}
+                      </span>
+                      <span className="text-[11px] font-semibold text-stone-500 dark:text-stone-400">
+                        g
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                {recipe.carbs !== undefined && (
+                  <div className="p-3 rounded-xl bg-white dark:bg-stone-800/80 border border-stone-200/70 dark:border-stone-700/60 flex flex-col justify-between">
+                    <span className="text-[11px] text-stone-500 dark:text-stone-400 font-medium">
+                      Carbohydrates
+                    </span>
+                    <div className="flex items-baseline gap-1 mt-1">
+                      <span className="text-xl font-bold tabular-nums text-amber-600 dark:text-amber-400 font-serif">
+                        {recipe.carbs}
+                      </span>
+                      <span className="text-[11px] font-semibold text-stone-500 dark:text-stone-400">
+                        g
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                {recipe.fat !== undefined && (
+                  <div className="p-3 rounded-xl bg-white dark:bg-stone-800/80 border border-stone-200/70 dark:border-stone-700/60 flex flex-col justify-between">
+                    <span className="text-[11px] text-stone-500 dark:text-stone-400 font-medium">
+                      Total Fat
+                    </span>
+                    <div className="flex items-baseline gap-1 mt-1">
+                      <span className="text-xl font-bold tabular-nums text-rose-600 dark:text-rose-400 font-serif">
+                        {recipe.fat}
+                      </span>
+                      <span className="text-[11px] font-semibold text-stone-500 dark:text-stone-400">
+                        g
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Action Row: Cookbooks Management, Meal Plan, Grocery, Print */}
           <div className="flex flex-wrap items-center gap-2.5">

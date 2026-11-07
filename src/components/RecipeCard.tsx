@@ -193,10 +193,10 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
             <span>{recipe.cuisine}</span>
             <span aria-hidden="true">·</span>
             <span>{recipe.difficulty}</span>
-            {recipe.proteinGrams && (
+            {(recipe.protein ?? recipe.proteinGrams) !== undefined && (
               <>
                 <span aria-hidden="true">·</span>
-                <span className="tabular-nums">{recipe.proteinGrams}g protein</span>
+                <span className="tabular-nums">{recipe.protein ?? recipe.proteinGrams}g protein</span>
               </>
             )}
           </div>

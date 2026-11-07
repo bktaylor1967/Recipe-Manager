@@ -55,6 +55,10 @@ export const ImportRecipeModal: React.FC<ImportRecipeModalProps> = ({
   const [manualPrep, setManualPrep] = useState(15);
   const [manualCook, setManualCook] = useState(20);
   const [manualServings, setManualServings] = useState(4);
+  const [manualCalories, setManualCalories] = useState<number | ''>(520);
+  const [manualProtein, setManualProtein] = useState<number | ''>(32);
+  const [manualCarbs, setManualCarbs] = useState<number | ''>(45);
+  const [manualFat, setManualFat] = useState<number | ''>(18);
   const [manualIngredients, setManualIngredients] = useState<string[]>([
     '2 cups jasmine rice',
     '400g chicken breast, cubed',
@@ -190,8 +194,11 @@ Steps:
           cookMinutes: raw.cookMinutes || 15,
           difficulty: (raw.difficulty as any) || 'Easy',
           cuisine: raw.cuisine || 'International',
-          calories: raw.calories || 450,
-          proteinGrams: raw.proteinGrams || 25,
+          calories: typeof raw.calories === 'number' ? raw.calories : undefined,
+          protein: typeof raw.protein === 'number' ? raw.protein : (typeof raw.proteinGrams === 'number' ? raw.proteinGrams : undefined),
+          proteinGrams: typeof raw.proteinGrams === 'number' ? raw.proteinGrams : (typeof raw.protein === 'number' ? raw.protein : undefined),
+          carbs: typeof raw.carbs === 'number' ? raw.carbs : undefined,
+          fat: typeof raw.fat === 'number' ? raw.fat : undefined,
           tags: raw.tags || ['Quick', 'Homemade'],
           cookbookIds: ['weeknight-20'],
           isFavorite: false,
@@ -276,7 +283,10 @@ Steps:
       difficulty: 'Easy',
       cuisine: cuisine,
       calories: 480,
+      protein: 24,
       proteinGrams: 24,
+      carbs: 45,
+      fat: 16,
       tags: ['Quick', 'Weeknight', 'Saved'],
       cookbookIds: ['weeknight-20'],
       isFavorite: false,
@@ -370,6 +380,11 @@ Steps:
       cookMinutes: manualCook,
       difficulty: manualDifficulty,
       cuisine: manualCuisine,
+      calories: manualCalories === '' ? undefined : Number(manualCalories),
+      protein: manualProtein === '' ? undefined : Number(manualProtein),
+      proteinGrams: manualProtein === '' ? undefined : Number(manualProtein),
+      carbs: manualCarbs === '' ? undefined : Number(manualCarbs),
+      fat: manualFat === '' ? undefined : Number(manualFat),
       tags: ['Home Cooked', 'Custom'],
       cookbookIds: ['weeknight-20'],
       isFavorite: false,
@@ -755,6 +770,66 @@ Steps:
                     onChange={(e) => setManualCook(parseInt(e.target.value) || 0)}
                     className="w-full px-3 py-2 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-xs"
                   />
+                </div>
+              </div>
+
+              {/* Optional Nutritional Information */}
+              <div className="p-3.5 rounded-2xl bg-stone-100/70 dark:bg-stone-800/50 border border-stone-200/80 dark:border-stone-750 space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-semibold text-stone-700 dark:text-stone-300 block">
+                    Nutrition per Serving (Optional)
+                  </label>
+                  <span className="text-[10px] text-stone-400">kcal & grams</span>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                  <div>
+                    <label className="text-[11px] text-stone-500 dark:text-stone-400 block mb-1">
+                      Calories (kcal)
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="e.g. 520"
+                      value={manualCalories}
+                      onChange={(e) => setManualCalories(e.target.value === '' ? '' : parseInt(e.target.value) || 0)}
+                      className="w-full px-3 py-1.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-xs tabular-nums"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[11px] text-stone-500 dark:text-stone-400 block mb-1">
+                      Protein (g)
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="e.g. 35"
+                      value={manualProtein}
+                      onChange={(e) => setManualProtein(e.target.value === '' ? '' : parseInt(e.target.value) || 0)}
+                      className="w-full px-3 py-1.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-xs tabular-nums"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[11px] text-stone-500 dark:text-stone-400 block mb-1">
+                      Carbs (g)
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="e.g. 40"
+                      value={manualCarbs}
+                      onChange={(e) => setManualCarbs(e.target.value === '' ? '' : parseInt(e.target.value) || 0)}
+                      className="w-full px-3 py-1.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-xs tabular-nums"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[11px] text-stone-500 dark:text-stone-400 block mb-1">
+                      Fat (g)
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="e.g. 18"
+                      value={manualFat}
+                      onChange={(e) => setManualFat(e.target.value === '' ? '' : parseInt(e.target.value) || 0)}
+                      className="w-full px-3 py-1.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-xs tabular-nums"
+                    />
+                  </div>
                 </div>
               </div>
 

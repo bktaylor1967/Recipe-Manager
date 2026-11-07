@@ -40,7 +40,10 @@ export interface Recipe {
   difficulty: RecipeDifficulty;
   cuisine: string;
   calories?: number;
+  protein?: number;
   proteinGrams?: number;
+  carbs?: number;
+  fat?: number;
   tags: string[];
   cookbookIds: string[];
   isFavorite: boolean;
